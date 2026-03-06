@@ -1,18 +1,18 @@
 📚 Course Selling App
 
-A full-stack course selling platform where admins can create and manage courses and users can browse and purchase them.
-Built with a modern MERN-style backend architecture, secure authentication, and production-level practices like JWT auth, Redis rate limiting,
-and middleware-based authorization.
+A full-stack course selling platform where admins can create and manage courses and users can browse, purchase and access them, for learning new technologies.
+Built with a modern React+Tailwind frontend, Node.js+Express.js backend, secure (Role-based) JWT authentication, integreted Stripe for paymentGateway, refreshToken-accessToken cycle to prevent leak,misuse and damage of token(authorization) and Redis-based rate limiting to simulate production-level backend practices.
 
 🚀 Features
 
 
 [ 👤 User Features ]
-- User registration and login
+- User Signup and Signin
 - Secure authentication using JWT
 - Browse available courses
--Purchase courses
-- Access purchased courses
+- Purchase courses
+- Access content of purchased courses
+- logout
 
 
 [ 🛠 Admin Features ]
@@ -20,7 +20,8 @@ and middleware-based authorization.
 - Create new courses
 - Update existing courses
 - Manage course content
-- View users and purchases
+- Delete course
+- View all available courses created by other admins(Read-only)
 
 [ 🔒 Security & Backend Practices ]
 - JWT Authentication
@@ -29,9 +30,25 @@ and middleware-based authorization.
 - Redis-based Rate Limiting
 - Secure API architecture
 - Middleware-based request validation
+- refresh Token cycle to prevent and minimize leak/damage of data and authorization
 
 
 [ 🧠 Tech Stack ]
+
+[ Frontend ]
+- React
+- Axios
+- React Router
+- Tailwind
+- ReactToast
+
+Key Implementations [Frontend ]
+- Axios API instance
+- JWT request interceptor
+- Automatic Authorization header injection
+- CORS handling
+- Authentication flow handling
+- Condtional Rendering on content of course
 
 [ Backend ]
 - Node.js
@@ -39,6 +56,15 @@ and middleware-based authorization.
 - Database
 - MongoDB
 - Mongoose
+
+Key Implementations [ Backend ]
+- RESTful API design
+- JWT authentication
+- Role-based authorization
+- Middleware architecture
+- Secure password hashing using bcrypt
+- Redis based rate limiting
+- MongoDB database modeling
 
 [ Authentication ]
 - JWT (JSON Web Tokens)
@@ -56,33 +82,93 @@ and middleware-based authorization.
 
 
 [ 📂 Project Structure ]
-- course-selling-app
+- course-selling-SaaS
 - │
-- ├── config
-- │   └── db.js
+- ├── backend
+- │   │
+- │   ├── config
+- │   │   ├── db.js
+- │   │   └── stripe.js
+- │   │
+- │   ├── controllers
+- │   │   ├── adminControllers.js
+- │   │   ├── globalControllers.js
+- │   │   ├── paymentControllers.js
+- │   │   └── userControllers.js
+- │   │
+- │   ├── Middlewares
+- │   │   ├── Middlewares.js
+- │   │   └── rateLimiters.js
+- │   │
+- │   ├── Models
+- │   │   └── models.js
+- │   │
+- │   ├── routes
+- │   │   ├── adminRoutes.js
+- │   │   ├── globalRoutes.js
+- │   │   ├── paymentsRoutes.js
+- │   │   └── userRoutes.js
+- │   │
+- │   ├── utils
+- │   │   └── redisClient.js
+- │   │
+- │   ├── validations
+- │   │   ├── adminValidations.js
+- │   │   ├── courseValidations.js
+- │   │   └── userValidations.js
+- │   │
+- │   ├── .env
+- │   ├── .gitignore
+- │   ├── main.js
+- │   ├── package.json
+- │   └── package-lock.json
 - │
-- ├── Middlewares
-- │   ├── authMiddleware.js
-- │   └── rateLimiters.js
+- ├── course-app   (Frontend - React + Vite)
+- │   │
+- │   ├── public
+- │   │
+- │   ├── src
+- │   │   │
+- │   │   ├── assets
+- │   │   │
+- │   │   ├── components
+- │   │   │   ├── Button.jsx
+- │   │   │   ├── Carsoul.jsx
+- │   │   │   ├── FAQ.jsx
+- │   │   │   ├── FeaturedProds.jsx
+- │   │   │   ├── Footer.jsx
+- │   │   │   ├── Hero.jsx
+- │   │   │   ├── Input.jsx
+- │   │   │   ├── Navbar.jsx
+- │   │   │   ├── NavbarSearch.jsx
+- │   │   │   ├── Podcasts.jsx
+- │   │   │   ├── ProtectedAdminRoute.jsx
+- │   │   │   ├── Signin.jsx
+- │   │   │   └── Signup.jsx
+- │   │   │
+- │   │   ├── pages
+- │   │   │   ├── adminPanel.jsx
+- │   │   │   ├── CourseDetailPage.jsx
+- │   │   │   ├── courses.jsx
+- │   │   │   ├── home.jsx
+- │   │   │   ├── paymentSuccess.jsx
+- │   │   │   └── purchasedCourses.jsx
+- │   │   │
+- │   │   ├── utils
+- │   │   │   └── api.js
+- │   │   │
+- │   │   ├── App.jsx
+- │   │   ├── index.css
+- │   │   └── main.jsx
+- │   │
+- │   ├── index.html
+- │   ├── vite.config.js
+- │   ├── eslint.config.js
+- │   ├── .gitignore
+- │   ├── package.json
+- │   └── package-lock.json
 - │
-- ├── models
-- │   ├── userModel.js
-- │   ├── adminModel.js
-- │   ├── courseModel.js
-- │   └── purchaseModel.js
-- │
-- ├── routes
-- │   ├── adminRoutes.js
-- │   ├── userRoutes.js
-- │   ├── globalRoutes.js
-- │   └── paymentsRoutes.js
-- │
-- ├── utils
-- │   └── redisClient.js
-- │
-- ├── server.js
-- └── package.json
-
+- └── README.md
 
 [ ⚙️ Environment Variables ]
 - Create a .env file in the root directory.
@@ -100,7 +186,7 @@ and middleware-based authorization.
 [ 🧪 Running the Project Locally ]
 
 1️⃣ Clone the repository
-- git clone https://github.com/your-username/course-selling-app.git
+- git clone https://github.com/Naufil-29/course-selling-SaaS
 
 2️⃣ Navigate to project
 - cd course-selling-app
@@ -139,28 +225,41 @@ Implemented using:
 
 [ 📬 API Endpoints Overview ]
 
-Users
+Users-Routes
 
 - POST /users/signup
-- POST /users/login
-- GET /users/courses
+- POST /users/signin
+- POST /users/course/:courseId (purchase a course)
+- GET /users/courses (get all courses)
+- GET /users/purchasedCourses (get all purchased courses)
+- GET /users/course/:courseId (get one course)
 
-Admin
+
+Admin-Routes
 
 - POST /admin/signup
-- POST /admin/login
-- POST /admin/course
-- PUT /admin/course/:id
-- GET /admin/courses
+- POST /admin/signin
+- POST /admin/course (create-course)
+- PUT /admin/course/:id (update-course)
+- DELETE /admin/course/:courseId (delete-course)
+- GET /admin/courses (get all courses)
+- GET /admin/mycourses (get all courses created by Me(admin))
+
+global-Routes
+
+- POST /refresh (For refreshToken to generate accessToken)
+- POST /logout (global logout for both [users/admins])
+- GET /search (search for all courses)
+
 
 Payments
 
-- POST /payment/checkout
-- POST /payment/verify
+- POST /payment/create-checkout-session (creates payment session of stripe)
+- POST /payment/verify (verifies if payment.status = paid, then add course._id to purchasedCourses[])
 
 [ 🎯 Learning Outcomes ]
 
-This project helped me learn and implement:
+This project helped me learn, Revise and implement:
 
 - RESTful API design
 - JWT authentication system
@@ -170,11 +269,9 @@ This project helped me learn and implement:
 - Role-based authorization
 - MongoDB schema design
 - Scalable backend structure
+- payment gateway integretion
 
 { 📌 Future Improvements ]
-- Add frontend using React
-- Integrate Stripe payments
-- Add course video streaming
 - Implement Docker deployment
 - Add CI/CD pipeline
 
