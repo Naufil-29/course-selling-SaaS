@@ -20,7 +20,8 @@ export default function AdminPanel() {
     price: "",
     oldPrice: "",
     discount: "",
-    image: ""
+    image: "",
+    video: ""
   });
 
   const [myCourses, setMyCourses] = useState([]);
@@ -70,7 +71,7 @@ export default function AdminPanel() {
       discount: "",
       image: "",
       desc: "",
-      video
+      video: ""
     });
   };
 
@@ -95,7 +96,7 @@ export default function AdminPanel() {
 
     const res = await api.post("/admin/course", formData);
 
-    await res.json();
+    await res.data;
 
     resetForm();
     fetchMyCourses();
@@ -189,7 +190,7 @@ export default function AdminPanel() {
             />
 
              <input
-                name="video"
+              name="video"
               value={formData.video}
               placeholder="Video URL"
               onChange={handleChange}

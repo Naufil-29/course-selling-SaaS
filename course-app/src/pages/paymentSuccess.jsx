@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [loading, setLoading] = useState(true);
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -76,7 +78,7 @@ export default function PaymentSuccess() {
             ₹ {course?.price}
           </p>
 
-          <button className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-800 transition">
+          <button onClick={() => navigate(`/course/${course._id}`)} className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-800 transition">
             Start Learning 🚀
           </button>
         </div>

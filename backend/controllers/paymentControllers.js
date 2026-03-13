@@ -28,8 +28,8 @@ export const createChekcoutSession = async (req, res) => {
             },
 
         ],
-        success_url: "http://localhost:5173/payment-success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url: "http://localhost:5173/payment-cancel",
+        success_url: "http://localhost:5174/payment-success?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: "http://localhost:5174/payment-cancel",
         metadata: { 
             userId: userId,
             courseId: courseId.toString(),

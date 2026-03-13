@@ -13,7 +13,7 @@ import { globalRateLimiter } from './Middlewares/rateLimiters.js';
 connectDB();
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "http://localhost:5174", credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(globalRateLimiter);
@@ -22,4 +22,4 @@ app.use("/users", userRoutes);
 app.use("/", globalRoutes);
 app.use("/payment", paymentRoutes);
 
-app.listen(3000, console.log('app listening on port 3000'));
+app.listen(process.env.PORT, console.log('app listening on port 3000'));
