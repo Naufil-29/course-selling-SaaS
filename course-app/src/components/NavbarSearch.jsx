@@ -14,7 +14,7 @@ export default function NavbarSearch() {
                 setResult([])
             }
             try{ 
-             const res = await api.get(`http://localhost:3000/search?q=${query}`);
+             const res = await api.get(`/search?q=${query}`);
              setResult(res.data.courses);
             }
            catch(e){ 
