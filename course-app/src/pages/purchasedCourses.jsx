@@ -23,7 +23,7 @@ export default function PurchasedCourses(){
     useEffect(() => { 
         const fetchPurchased = async () => { 
           try{ 
-            const res = await api.get("http://localhost:3000/users/purchasedCourses");
+            const res = await api.get("/users/purchasedCourses");
             setCourses(res.data.purchasedCourses);
           }
           catch(e){ 

@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 const api = axios.create({ 
-    baseURL: "http://localhost:3000",
+    baseURL: "https://course-selling-saas.onrender.com",
     withCredentials: true
 });
 
 const refreshApi = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://course-selling-saas.onrender.com",
   withCredentials: true
 });
 
