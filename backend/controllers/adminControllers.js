@@ -50,9 +50,20 @@ export const adminSignin = async(req, res) => {
             Msg: "bad input or incorrect syntax"
         });
     }
+    const ValidData = result.data;
 
-    const ValidData = result.data
+    const { email, password } = result.data;
 
+    const Admin = await AdminModel.findOne({email}).select("+password");
+
+    const isMatch = await bcrypt.compare(password, Admin.password);
+
+    if (!isMatch) {
+        return res.status(401).json({
+         Msg: "Invalid credentials"
+        });
+    }
+    
     const existingAdmin = await AdminModel.findOne({ 
         email: ValidData.email
     });
