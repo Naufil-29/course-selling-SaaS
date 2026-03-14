@@ -52,7 +52,7 @@ export const authRateLimiter = async (req, res, next) => {
 };
 
 export const payRateLimiter = async (req, res, next) => { 
-  const ip = req.ip || req.headers("x-forwarded-for") || "anonymous";
+  const ip = req.ip || req.headers["x-forwarded-for"] || "anonymous";
   const { success } = await payLimit.limit(ip);
 
   if(!success){ 

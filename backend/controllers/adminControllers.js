@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 import { AdminModel, CourseModel } from "../Models/models.js";
 import { adminSignupSchema, adminSigninSchema } from "../validations/adminValidations.js";
 import { courseZodSchema } from "../validations/courseValidations.js";
@@ -17,9 +18,14 @@ export const adminSignup = async(req, res) => {
         });
     }
 
-    const ValidData = result.data;
+    const { username, email, password  } = result.data;
+    let saltRounds = 10;
 
-    const newAdmin = await AdminModel.create(ValidData);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newAdmin = await AdminModel.create({ 
+        username, email, password: hashedPassword
+    });
 
     res.status(200).json({ 
         Msg: 'New admin created successfully',
