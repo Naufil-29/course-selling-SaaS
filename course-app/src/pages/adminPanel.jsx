@@ -46,13 +46,13 @@ export default function AdminPanel() {
   }, []);
 
   const fetchMyCourses = async () => {
-    const res = await api.get("https://course-selling-saas.onrender.com/admin/mycourses");
+    const res = await api.get("/admin/mycourses");
     const data = await res.data;
     setMyCourses(data.courses);
   };
 
   const fetchAllCourses = async () => {
-    const res = await api.get("https://course-selling-saas.onrender.com/admin/courses");
+    const res = await api.get("/admin/courses");
     const data = await res.data;
     setAllCourses(data.courses);
   };
