@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import api from '../utils/api';
 
 export default function SignUp({closeSignup, openSignin}) { 
     const [loading, setLoading] = useState(false);
@@ -70,8 +71,8 @@ export default function SignUp({closeSignup, openSignin}) {
 
             setLoading(true);
 
-        const response = await axios.post(
-         "http://localhost:3000/users/signup", formData);
+        const response = await api.post(
+         "/users/signup", formData);
 
           
           const result = response.data;
