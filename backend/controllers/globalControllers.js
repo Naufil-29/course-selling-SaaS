@@ -82,4 +82,13 @@ export const searchCourses = async (req, res) => {
     console.log("serch-error", e);
     return res.status(500).json({ Msg:"error-searching-courses" })
   }
-}
+};
+
+export const healthCheckUp = (req, res) => { 
+  try{ 
+    res.status(200).json({Msg: "server is awake and alright"})
+  }
+  catch(e){ 
+    res.status(500).json({Msg: "error sending response"})
+  }
+};
