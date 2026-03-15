@@ -3,37 +3,36 @@ import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
 
-export default function NavbarSearch() { 
-    const [query, setQuery] = useState("");
-    const [result, setResult] = useState([]);
-    const navigate = useNavigate();
+export default function NavbarSearch({ fullWidth, className = "" }) {
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState([]);
+  const navigate = useNavigate();
 
-    useEffect(() => { 
-        const fetchResult = async () => { 
-            if(!query){ 
-                setResult([])
-            }
-            try{ 
-             const res = await api.get(`/search?q=${query}`);
-             setResult(res.data.courses);
-            }
-           catch(e){ 
-            console.log("serching-courses-error", e)
-           }
-        };
+  useEffect(() => {
+    const fetchResult = async () => {
+      if (!query) {
+        setResult([]);
+      }
+      try {
+        const res = await api.get(`/search?q=${query}`);
+        setResult(res.data.courses);
+      } catch (e) {
+        console.log("searching-courses-error", e);
+      }
+    };
 
-        const delayDebounce = setTimeout(fetchResult, 300);
-        return () => clearTimeout(delayDebounce)
-    }, [query]);
+    const delayDebounce = setTimeout(fetchResult, 300);
+    return () => clearTimeout(delayDebounce);
+  }, [query]);
 
-    return <div className="relative">
-      
+  return (
+    <div className={`relative ${fullWidth ? "flex-1 min-w-0" : ""} ${className}`}>
       <input
         type="text"
         placeholder="Search courses..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="px-4 py-2 rounded-lg w-64 outline-none border-none"
+        className={`px-2 sm:px-4 py-2 rounded-lg outline-none border-none ${fullWidth ? "w-full" : "w-48 sm:w-64"}`}
       />
 
       {result.length > 0 && (
@@ -62,5 +61,5 @@ export default function NavbarSearch() {
         </div>
       )}
     </div>
-
+  );
 }

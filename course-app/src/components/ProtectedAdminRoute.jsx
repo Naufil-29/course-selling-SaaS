@@ -6,7 +6,7 @@ export default function ProtectedAdminRoute({ children }) {
     console.log(token)
 
     if(!token){ 
-        return <Navigate to="/"/>;
+        return <Navigate to="/" />;
     }
 
     try{ 
@@ -14,7 +14,7 @@ export default function ProtectedAdminRoute({ children }) {
         console.log(decoded)
 
         if(decoded.role !== "admin"){ 
-            return <Navigate to="/"/>;
+            return <Navigate to="/" />;
         }
 
         return children;

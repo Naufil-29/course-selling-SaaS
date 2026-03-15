@@ -1,138 +1,145 @@
-import axios from 'axios';
-import api from '../utils/api';
-import img from '../assets/harkirat-transparent.png';
-import Button from './Button';
-import Input from './Input';
-import { X } from 'lucide-react';
-import { useState, useRef } from 'react';
-import toast from 'react-hot-toast';
+import api from "../utils/api";
+import img from "../assets/harkirat-transparent.png";
+import Button from "./Button";
+import Input from "./Input";
+import { X } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-export default function SignIn({closeSignin, setUserInitial}) { 
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const [loading, setLoading] = useState(false);
+export default function SignIn({ closeSignin, setUserInitial }) {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-    const [formData, setFormData] = useState({ 
-        username: "",
-        email: "",
-        password: ""
-    });
-    const [errors, setErrors] = useState({ 
-        username: "",
-        email: "",
-        password: ""
-    });
-
-    const validate = (name, value) => { 
-        let newErrors = "";
-
-        if(name === "username"){ 
-            if(!value || value.length < 3){ 
-                console.log(value)
-                newErrors = "Username must be atleast 3 characters";
-                console.log(newErrors)
-        }
-        }
-
-        if(name === "email"){ 
-            console.log(value)
-            if(!/\S+@\S+\.\S+/.test(value)){ 
-            newErrors = "Invalid email address"
-        }
-        }
-
-        if(name === "password"){ 
-            if(!value || value.length < 6){ 
-            newErrors = "Password must be atleast 6 characters"
-            console.log(newErrors)
-        }
-        }
-        setErrors((prev) => ({ 
-            ...prev,
-            [name]: newErrors
-        }));
-        return newErrors
-    };
-
-    const handleChange = (e) => { 
-        const { name, value } = e.target;
-
-        setFormData((prev) => ({ 
-            ...prev,
-            [name]: value
-        }));
-
-        validate(name, value); // Live validation
-    };
-
-    const signin = async() => { 
-        if (Object.values(errors).some((err) => err !== "")) {
-                toast.error("Please fix errors first");
-                return;
-            }
-        setLoading(true)
-        try{ 
-         const response = await api.post("/users/signin",formData);
-
-         const user = response.data.user;
-         const firstChar = user.username[0].toUpperCase();
-         setUserInitial(firstChar);
-
-         const accessToken = response.data.accessToken;
-         localStorage.setItem('accessToken', accessToken);
-         localStorage.setItem('user', JSON.stringify(user));
-         toast.success("you are signedIn");
-         closeSignin();
-        }
-        catch(err){ 
-            console.error("Signip error:", err);
-            toast.error("error In singIn");
-        }
-        finally{ 
-            setLoading(false)
-        }
+  const validate = (name, value) => {
+    let newErrors = "";
+    if (name === "username") {
+      if (!value || value.length < 3) {
+        newErrors = "Username must be at least 3 characters";
+      }
     }
+    if (name === "email") {
+      if (!/\S+@\S+\.\S+/.test(value)) {
+        newErrors = "Invalid email address";
+      }
+    }
+    if (name === "password") {
+      if (!value || value.length < 6) {
+        newErrors = "Password must be at least 6 characters";
+      }
+    }
+    setErrors((prev) => ({ ...prev, [name]: newErrors }));
+    return newErrors;
+  };
 
-    return( 
-        <div className="main fixed inset-0 z-50 w-screen h-screen bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all">
-            {loading && (
-                <div className="w-[20%] h-[20%] absolute left-215 flex flex-col items-center gap-5 p-5 rounded-xl justify-center mt-2 bg-black/10 backdrop-blur-lg">
-                <div className="w-15 h-15 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                    <p>loading please wait...</p>
-                </div>
-            )} 
-            <div className="card w-[70%] h-[80%] bg-white rounded-xl p-8 flex items-center justify-center"> 
-                <div className="img-section relative w-full h-full rounded-xl flex items-center justify-center bg-linear-to-br from-[#020A3F] via blue-900 to-[#020A3F] text-white">
-                    <div className='absolute top-0  p-4 w-[90%]'>
-                        <h1 className='text-4xl font-bold pb-5'>Become a 100x developer</h1> 
-                        <h1 className='text-xl font-semibold ' >Hands-on bootcamps, real-porjects - start building today</h1>
-                    </div>
-                    <img className='w-80 absolute bottom-0' src={img}></img>
-                </div>
-                <div className="form-section w-full h-full rounded-xl p-5">
-                     <div className='header w-full h-10 border-none text-center flex items-center justify-center'> 
-                        <p className='w-[95%] font-extrabold text-2xl'>100<span className='text-red-600'>x</span>Devs</p>
-                        <div onClick={closeSignin} className='w-10 h-10 bg-gray-500 rounded-full flex justify-center items-center text-white border-none'><X/></div>
-                     <div></div>
-                     </div>
-                <div className='form-content '> 
-                    <p className='heading text-xl font-bold pb-10'>Sign in to your account</p>
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    validate(name, value);
+  };
 
-                    <div className='form-input'> 
-                        <div className="email-input"> 
-                            <Input errors={errors.email} onChange={handleChange} name="email" value={formData.email} heading="Email" placeholder="Enter your email" />
-                        </div>
-                        <div className="password-input"> 
-                            <Input errors={errors.password} onChange={handleChange} name="password" value={formData.password} heading="Password" placeholder="Enter your password" />
-                        </div>
-                        <div disabled={loading} className='singup-button disabled:bg-blue-900 disabled:text-black' onClick={signin}> 
-                            <Button loading={loading} className="singup-button" text="Signin"/>
-                        </div>
-                    </div>
-                </div>
-                </div>
+  const signin = async () => {
+    if (Object.values(errors).some((err) => err !== "")) {
+      toast.error("Please fix errors first");
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await api.post("/users/signin", formData);
+      const user = response.data.user;
+      const firstChar = user.username[0].toUpperCase();
+      setUserInitial(firstChar);
+      const accessToken = response.data.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("You are signed in");
+      closeSignin();
+    } catch (err) {
+      console.error("Signin error:", err);
+      toast.error("Error signing in");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            </div>
+  return (
+    <div className="main fixed inset-0 z-50 w-screen h-screen bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto transition-all">
+      {loading && (
+        <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-4 bg-black/20 backdrop-blur-sm">
+          <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <p className="text-white font-medium">Loading, please wait...</p>
         </div>
-    )
+      )}
+      <div className="card w-full max-w-md md:max-w-2xl md:w-[85%] lg:w-[70%] min-h-0 max-h-[90vh] md:max-h-[85vh] bg-white rounded-xl flex flex-col md:flex-row overflow-hidden my-auto">
+        <div className="img-section relative w-full md:w-1/2 min-h-[180px] md:min-h-[400px] flex items-center justify-center bg-gradient-to-br from-[#020A3F] via-blue-900 to-[#020A3F] text-white flex-shrink-0">
+          <div className="absolute top-0 left-0 right-0 p-4 text-center md:text-left">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold pb-2 md:pb-5">
+              Become a 100x developer
+            </h1>
+            <p className="text-sm md:text-base lg:text-xl font-semibold text-white/90">
+              Hands-on bootcamps, real projects — start building today
+            </p>
+          </div>
+          <img
+            className="w-48 md:w-64 lg:w-80 absolute bottom-0 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-0"
+            src={img}
+            alt=""
+          />
+        </div>
+        <div className="form-section w-full md:w-1/2 flex flex-col overflow-y-auto">
+          <div className="header w-full min-h-14 px-4 flex items-center justify-between border-b border-gray-100 flex-shrink-0">
+            <p className="font-extrabold text-xl md:text-2xl">
+              100<span className="text-red-600">x</span>Devs
+            </p>
+            <button
+              type="button"
+              onClick={closeSignin}
+              className="w-10 h-10 bg-gray-500 rounded-full flex justify-center items-center text-white hover:bg-gray-600 min-w-[2.5rem] min-h-[2.5rem]"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="form-content flex-1 p-4 md:p-6 lg:p-8">
+            <p className="heading text-lg md:text-xl font-bold pb-6 md:pb-10">
+              Sign in to your account
+            </p>
+            <div className="form-input flex flex-col gap-4">
+              <Input
+                errors={errors.email}
+                onChange={handleChange}
+                name="email"
+                value={formData.email}
+                heading="Email"
+                placeholder="Enter your email"
+              />
+              <Input
+                errors={errors.password}
+                onChange={handleChange}
+                name="password"
+                value={formData.password}
+                heading="Password"
+                placeholder="Enter your password"
+              />
+              <div onClick={signin} className="w-full">
+                <Button
+                  loading={loading}
+                  className="singup-button w-full"
+                  text="Signin"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

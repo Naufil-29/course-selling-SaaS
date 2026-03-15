@@ -60,7 +60,7 @@ export default function PaymentSuccess() {
 
   if (loading && !pending) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-blue-900 text-white text-2xl">
+      <div className="min-h-screen flex items-center justify-center bg-blue-900 text-white text-lg sm:text-xl md:text-2xl px-4">
         Processing your payment...
       </div>
     );
@@ -68,8 +68,8 @@ export default function PaymentSuccess() {
 
   if (pending) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-blue-900 text-white text-xl">
-        <p>Payment confirmed. Verifying and unlocking your course...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-blue-900 text-white text-base sm:text-lg md:text-xl px-4">
+        <p className="text-center">Payment confirmed. Verifying and unlocking your course...</p>
         <div className="w-10 h-10 border-2 border-white border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -77,18 +77,20 @@ export default function PaymentSuccess() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-blue-900 text-white flex flex-col items-center justify-center py-16 px-4 gap-6">
-        <h1 className="text-2xl font-bold text-center">Payment verification</h1>
-        <p className="text-center text-blue-200 max-w-md">{error}</p>
-        <div className="flex gap-4">
+      <div className="min-h-screen bg-blue-900 text-white flex flex-col items-center justify-center py-12 px-4 sm:py-16 gap-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-center">Payment verification</h1>
+        <p className="text-center text-blue-200 max-w-md text-sm sm:text-base">{error}</p>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none sm:w-auto">
           <button
-            className="px-6 py-3 rounded-xl bg-white text-blue-900 font-semibold"
+            type="button"
+            className="px-6 py-3 rounded-xl bg-white text-blue-900 font-semibold min-h-[44px]"
             onClick={() => navigate("/purchased")}
           >
             My Purchased Courses
           </button>
           <button
-            className="px-6 py-3 rounded-xl border border-white"
+            type="button"
+            className="px-6 py-3 rounded-xl border border-white min-h-[44px]"
             onClick={() => window.location.reload()}
           >
             Retry
@@ -99,38 +101,38 @@ export default function PaymentSuccess() {
   }
 
   return (
-    <div className="min-h-screen bg-blue-900 text-white flex flex-col items-center py-16 px-4">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
+    <div className="min-h-screen bg-blue-900 text-white flex flex-col items-center py-10 sm:py-14 md:py-16 px-4 overflow-x-hidden min-w-0">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 text-center">
         🎉 Payment Successful!
       </h1>
 
-      <p className="text-lg text-blue-200 mb-10 text-center">
+      <p className="text-base sm:text-lg text-blue-200 mb-8 md:mb-10 text-center max-w-lg">
         Congratulations! You have successfully purchased{" "}
-        <span className="font-semibold text-white">
-          {course?.title}
-        </span>
+        <span className="font-semibold text-white">{course?.title}</span>
       </p>
 
-      <div className="p-5 bg-white text-black rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform hover:scale-105 transition duration-300">
+      <div className="p-4 sm:p-5 bg-white text-black rounded-xl md:rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transition duration-300">
         <img
           src={course?.image}
           alt={course?.title}
-          className="w-full h-56 object-cover rounded-2xl"
+          className="w-full h-48 sm:h-56 object-cover rounded-xl md:rounded-2xl"
         />
-        <div className="p-6">
-          <h2 className="text-xl font-bold mb-2">{course?.title}</h2>
-          <p className="text-gray-600 mb-4">{course?.desc}</p>
-          <p className="font-semibold text-lg mb-4">₹ {course?.price}</p>
+        <div className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-bold mb-2">{course?.title}</h2>
+          <p className="text-gray-600 text-sm sm:text-base mb-3 md:mb-4 line-clamp-2">{course?.desc}</p>
+          <p className="font-semibold text-base sm:text-lg mb-4">₹ {course?.price}</p>
           <button
+            type="button"
             onClick={() => navigate(`/course/${course._id}`)}
-            className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-800 transition"
+            className="w-full bg-blue-900 text-white py-2.5 sm:py-3 rounded-lg hover:bg-blue-800 transition min-h-[44px] font-medium"
           >
             Start Learning 🚀
           </button>
         </div>
       </div>
       <button
-        className="mt-20 px-20 py-3 rounded-2xl text-xl font-bold bg-red-600 overflow-hidden transform hover:scale-105 transition duration-300"
+        type="button"
+        className="mt-12 sm:mt-16 md:mt-20 px-8 sm:px-12 md:px-20 py-3 rounded-xl md:rounded-2xl text-base sm:text-lg md:text-xl font-bold bg-red-600 min-h-[44px]"
         onClick={() => (window.location.href = "/courses")}
       >
         Back To Courses

@@ -23,7 +23,8 @@ export default function HomePage() {
             setUserInitial(firstChar);
         }
     },[])
-    return<div className="relative"> 
+    return (
+    <div className="relative overflow-x-hidden min-w-0"> 
         <Navbar openSignup={() => setShowSignup(true)} openSignin={() => setShowSignin(true)} userInitial={userInitial} setUserInitial={setUserInitial}/>
         {showSignup && ( 
             <Signup openSignin={() => setShowSignin(true)} closeSignup={() => setShowSignup(false)}/>
@@ -38,4 +39,5 @@ export default function HomePage() {
         <FAQ/>
         <Footer/>
     </div>
+    );
 }

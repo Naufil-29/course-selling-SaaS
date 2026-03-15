@@ -24,7 +24,11 @@ function App() {
       </ProtectedAdminRoute>
       }/>
     <Route path="/payment-success" element={<PaymentSuccess/>}/>
-    <Route path="/payment-cancel" element={<h1>Payment Cancelled ❌</h1>} />
+    <Route path="/payment-cancel" element={
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800">Payment Cancelled ❌</h1>
+      </div>
+    } />
     <Route path="/purchased" element={<PurchasedCourses/>} />
     <Route path="/course/:courseId" element={<CourseDetailPage/>} />
   </Routes>
